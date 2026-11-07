@@ -6,6 +6,7 @@ import rsa.Benchmark.Pair;
 
 public class EntryPoint
 {
+	public static String version = "0.02";
 	public static ArgMap argmap;
 	
 	public static void main(String[] args)
@@ -46,6 +47,7 @@ public class EntryPoint
 	
 	private static void showParameters()
 	{
+		System.out.println("RSA DR-AOV Cuts - v" + version);
 		System.out.println("-inst [s]   Instance type (b|c)");
 		System.out.println("-obj [s]    Objective function (max|sum|path)");
 		System.out.println("-n [n]      Nodes in each component");

@@ -18,6 +18,7 @@ public class Model
 	private MPVariable[][][] y;
 	private MPVariable[][] x;
 	private MPVariable z;
+	private MPVariable[][] w;
 
 	private ResultStatus _status;
 	private double _primal;
@@ -93,6 +94,15 @@ public class Model
 				y[d][i][j] = _solver.makeBoolVar("y(" + d + "," + i + "," + j + ")");
 			else
 				y[d][i][j] = _solver.makeNumVar(0, 1, "y(" + d + "," + i + "," + j + ")");
+		}
+		
+		if( _objective == Objective.SumSlot )
+		{
+			w = new MPVariable[_instance.nodes()][_instance.nodes()];
+
+			for(int i=0; i<_instance.nodes(); ++i)
+			for(int j=0; j<_instance.nodes(); ++j) if( _instance.isArc(i, j) )
+				w[i][j] = _solver.makeNumVar(0, _instance.slots(), "w(" + i + "," + j + ")");
 		}
 	}
 	
@@ -197,10 +207,21 @@ public class Model
 		
 		if( _objective == Objective.SumSlot )
 		{
+			for(int d=0; d<_instance.demands(); ++d)
+			for(int i=0; i<_instance.nodes(); ++i)
+			for(int j=0; j<_instance.nodes(); ++j) if( _instance.isArc(i, j) )
+			{
+				MPConstraint constr = _solver.makeConstraint(-_infinity, _instance.slots() - _instance.getVolume(d));
+				constr.setCoefficient(l[d], 1);
+				constr.setCoefficient(w[i][j], -1);
+				constr.setCoefficient(y[d][i][j], _instance.slots());
+			}
+			
 			MPObjective obj = _solver.objective();
 
-			for(int d=0; d<_instance.demands(); ++d)
-				obj.setCoefficient(l[d], 1);
+			for(int i=0; i<_instance.nodes(); ++i)
+			for(int j=0; j<_instance.nodes(); ++j) if( _instance.isArc(i, j) )
+				obj.setCoefficient(w[i][j], 1);
 		}
 		
 		if( _objective == Objective.PathLength )
@@ -224,8 +245,8 @@ public class Model
 		
 		if( _status == ResultStatus.OPTIMAL || _status == ResultStatus.FEASIBLE )
 		{
-			_primal = z.solutionValue();
-			_dual = _status == ResultStatus.OPTIMAL ? z.solutionValue() : _solver.objective().bestBound();
+			_primal = _solver.objective().value();
+			_dual = _status == ResultStatus.OPTIMAL ? _solver.objective().value() : _solver.objective().bestBound();
 		}
 
 		if( _showSolution == true )
@@ -234,7 +255,7 @@ public class Model
 			
 			if( _status == ResultStatus.OPTIMAL || _status == ResultStatus.FEASIBLE )
 			{
-				System.out.println("Slots: " + z.solutionValue());
+				System.out.println("Obj: " + _solver.objective().value());
 				System.out.println();
 
 				for(int d=0; d<_instance.demands(); ++d)
@@ -250,6 +271,10 @@ public class Model
 					System.out.println();
 				}
 			}
+
+			for(int i=0; i<_instance.nodes(); ++i)
+			for(int j=0; j<_instance.nodes(); ++j) if( w != null && _instance.isArc(i,j) &&  w[i][j].solutionValue() > 0.01 )
+				System.out.println("   " + w[i][j].name() + " = " + w[i][j].solutionValue());
 	
 			System.out.println();
 		}
