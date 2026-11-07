@@ -285,26 +285,22 @@ public class Model
 		}
 	}
 	
-	private static boolean _headerShown = false;
-
+	public static void printHeaders()
+	{
+		System.out.print("Vars | ");
+		System.out.print("Cons | ");
+		System.out.print("Status | ");
+		System.out.print("LB | ");
+		System.out.print("UB | ");
+		System.out.print("Gap | ");
+		System.out.print("Nodes | ");
+		System.out.print("Time | ");
+		System.out.print("Params ");
+		System.out.println();
+	}
+	
 	private void showSummary()
 	{
-		if( _headerShown == false )
-		{
-			System.out.print("Vars | ");
-			System.out.print("Cons | ");
-			System.out.print("Status | ");
-			System.out.print("LB | ");
-			System.out.print("UB | ");
-			System.out.print("Gap | ");
-			System.out.print("Nodes | ");
-			System.out.print("Time | ");
-			System.out.print("Params ");
-			System.out.println();
-			
-			_headerShown = true;
-		}
-		
 		System.out.print(_solver.numVariables() + " | ");
 		System.out.print(_solver.numConstraints() + " | ");
 		System.out.print(_status + " | ");

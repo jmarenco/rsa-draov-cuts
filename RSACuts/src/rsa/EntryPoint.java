@@ -6,7 +6,7 @@ import rsa.Benchmark.Pair;
 
 public class EntryPoint
 {
-	public static String version = "0.03";
+	public static String version = "0.04";
 	public static ArgMap argmap;
 	
 	public static void main(String[] args)
@@ -16,7 +16,13 @@ public class EntryPoint
 
 		if( argmap.containsArg("-help") )
 			showParameters();
-		
+
+		if( argmap.containsArg("-headers") )
+			Model.printHeaders();
+
+		if( argmap.containsArg("-help") || argmap.containsArg("-headers") )
+			return;
+
 		Benchmark.setSlots(argmap.intArg("-s", 500));
 		Benchmark.setMinVolume(argmap.intArg("-minv", 10));
 		Benchmark.setMaxVolume(argmap.intArg("-maxv", 30));
@@ -65,6 +71,7 @@ public class EntryPoint
 		System.out.println("-magic      Use SCIP magic");
 		System.out.println("-lr         Solve linear relaxation");
 		System.out.println("-verbose    Verbose mode");
+		System.out.println("-headers    Print headers");
 	}
 	
 	private static Model.Objective toObjective(String obj)
