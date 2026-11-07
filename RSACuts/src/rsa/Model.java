@@ -30,6 +30,7 @@ public class Model
 	private boolean _showSolution = false;
 	private boolean _singleCliques = false;
 	private boolean _doubleCliques = false;
+	private boolean _scipMagic = false;
 	private boolean _linearRelaxation = false;
 	
 	public static enum Objective { MaxSlot, SumSlot, PathLength };
@@ -238,8 +239,12 @@ public class Model
 	private void solveModel()
 	{
 		_solver.setTimeLimit((int)(1000 * _timeLimit));
-		_solver.setSolverSpecificParametersAsString("separating/maxcuts = 0");
-		_solver.setSolverSpecificParametersAsString("separating/maxcutsroot = 0");
+		
+		if( _scipMagic == false )
+		{
+			_solver.setSolverSpecificParametersAsString("separating/maxcuts = 0");
+			_solver.setSolverSpecificParametersAsString("separating/maxcutsroot = 0");
+		}
 		
 		_status = _solver.solve();
 		
@@ -335,6 +340,11 @@ public class Model
 	public void setDoubleCliques(boolean value)
 	{
 		_doubleCliques = value;
+	}
+	
+	public void setScipMagic(boolean value)
+	{
+		_scipMagic = value;
 	}
 	
 	public void setLinearRelaxation(boolean value)

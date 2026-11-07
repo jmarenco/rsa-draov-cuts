@@ -6,7 +6,7 @@ import rsa.Benchmark.Pair;
 
 public class EntryPoint
 {
-	public static String version = "0.02";
+	public static String version = "0.03";
 	public static ArgMap argmap;
 	
 	public static void main(String[] args)
@@ -42,6 +42,7 @@ public class EntryPoint
 		model.setVerbose(argmap.containsArg("-verbose"));
 		model.setSingleCliques(argmap.containsArg("-clique"));
 		model.setDoubleCliques(argmap.containsArg("-double"));
+		model.setScipMagic(argmap.containsArg("-magic"));
 		model.solve();
 	}
 	
@@ -61,6 +62,7 @@ public class EntryPoint
 		System.out.println("-time [n]   Time limit");
 		System.out.println("-clique     Add clique inequalities");
 		System.out.println("-double     Add double clique inequalities");
+		System.out.println("-magic      Use SCIP magic");
 		System.out.println("-lr         Solve linear relaxation");
 		System.out.println("-verbose    Verbose mode");
 	}
