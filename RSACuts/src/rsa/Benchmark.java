@@ -75,7 +75,7 @@ public class Benchmark
 			
 			ret.addDemand(origin, destination, volume);
 			
-			if( i > 0 && volume < _slots - _bigVolume )
+			if( i > 0 && volume > _slots - _bigVolume )
 				clique.add(i);
 		}
 		
