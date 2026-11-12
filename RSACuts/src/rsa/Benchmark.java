@@ -79,8 +79,6 @@ public class Benchmark
 				clique.add(i);
 		}
 		
-		System.out.println("Clique size: " + clique.size());
-		
 		return new Pair(ret, clique);
 	}
 	

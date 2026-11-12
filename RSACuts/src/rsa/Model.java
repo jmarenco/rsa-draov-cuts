@@ -295,6 +295,8 @@ public class Model
 		System.out.print("Gap | ");
 		System.out.print("Nodes | ");
 		System.out.print("Time | ");
+		System.out.print("Cliques | ");
+		System.out.print("Avg. clique size | ");
 		System.out.print("Params ");
 		System.out.println();
 	}
@@ -309,6 +311,8 @@ public class Model
 		System.out.print((_primal > 0 ? (_dual - _primal) * 100 / _primal : 0) + " | ");
 		System.out.print(_solver.nodes() + " | ");
 		System.out.print(_solver.wallTime() + " | ");
+		System.out.print(_cliques.size() + " | ");
+		System.out.print(_cliques.stream().mapToDouble(c -> c.size()).average().orElse(0) + " | ");
 		System.out.print(EntryPoint.argmap);
 		System.out.println();
 	}
