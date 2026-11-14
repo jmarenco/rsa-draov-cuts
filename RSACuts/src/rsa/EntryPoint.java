@@ -6,7 +6,7 @@ import rsa.Benchmark.Pair;
 
 public class EntryPoint
 {
-	public static String version = "0.06";
+	public static String version = "0.07";
 	public static ArgMap argmap;
 	
 	public static void main(String[] args)

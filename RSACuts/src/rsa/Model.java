@@ -181,7 +181,7 @@ public class Model
 			MPConstraint constr = _solver.makeConstraint(-_infinity, -_instance.getVolume(d));
 			constr.setCoefficient(l[d], 1);
 			constr.setCoefficient(l[dp], -1);
-			constr.setCoefficient(x[dp][d], clique.stream().mapToDouble(k -> _instance.getVolume(k)).sum() - _instance.slots());
+			constr.setCoefficient(x[dp][d], clique.stream().filter(k -> d != k && dp != k).mapToDouble(k -> _instance.getVolume(k)).sum() - _instance.slots());
 			
 			for(Integer k: clique) if( d != k && dp != k )
 			{
